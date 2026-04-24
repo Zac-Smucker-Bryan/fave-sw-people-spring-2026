@@ -3,6 +3,7 @@ import { TsteeleFaves } from './tsteele-faves/tsteele-faves';
 import { CbaresFaves } from './cbares-faves/cbares-faves';
 import { DweiseFaves } from './dweise-faves/dweise-faves';
 import { ThamiltonFaves } from './thamilton-faves/thamilton-faves';
+import { LmeierFaves } from './lmeier-faves/lmeier-faves';
 
 export const routes: Routes = [
     {
@@ -20,5 +21,9 @@ export const routes: Routes = [
     {
         path: 'thamilton',
         component: ThamiltonFaves,
+  },
+  {
+        path: 'lmeier',
+        component: LmeierFaves,
   },
 ];
