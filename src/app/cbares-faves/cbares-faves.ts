@@ -29,4 +29,17 @@ export class CbaresFaves {
       e => console.warn(e)
     )
   }
+
+  protected async promisesWithAsyncAwait() {
+    try {
+
+      const numberOne = await this.swPeopleSvc.getMagicNumber(true);
+      console.log(numberOne);
+
+      const numberTwo = await this.swPeopleSvc.getMagicNumber(false);
+      console.log(numberTwo);
+    } catch(e) {
+      console.warn(e);
+    }
+  }
 }
