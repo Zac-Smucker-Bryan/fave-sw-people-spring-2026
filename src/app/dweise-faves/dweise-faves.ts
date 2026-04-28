@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { SwPeopleService } from '../sw-people.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-dweise-faves',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './dweise-faves.html',
   styleUrl: './dweise-faves.css',
 })
-export class DweiseFaves {}
+export class DweiseFaves {
+  private swPeopleSvc = inject(SwPeopleService);
+
+  protected readonly people$ = this.swPeopleSvc.getSwPeople();
+}
