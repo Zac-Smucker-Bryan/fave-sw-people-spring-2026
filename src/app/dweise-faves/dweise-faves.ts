@@ -40,4 +40,28 @@ export class DweiseFaves {
       console.warn(e);
     }
   }
+
+  protected async promisesFun() {
+    try {
+      const numberOne = this.swPeopleSvc.getMagicNumber(true);
+      const numberTwo = this.swPeopleSvc.getMagicNumber(true);
+
+      const data = await Promise.all(
+        [numberOne, numberTwo]
+      );
+      
+      // const data = await Promise.any(
+      //   [numberOne, numberTwo]
+      // );
+
+      // const data = await Promise.race(
+      //   [numberOne, numberTwo]
+      // );
+
+      console.log(data);
+    } 
+    catch {
+
+    }
+  }
 }
