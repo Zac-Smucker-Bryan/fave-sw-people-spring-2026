@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, tap } from 'rxjs';
+import { firstValueFrom, map, tap } from 'rxjs';
+
+export type MsTeamsPostDataShape = {
+  name: string;
+  faves: string;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +42,16 @@ export class SwPeopleService {
       tap(
         x => console.log(x)
       ),
+    );
+  }
+
+  public postFavesToMsTeams(postData: MsTeamsPostDataShape) {
+    const teamsWebhookUrl = 'https://default33f001466fcc49e9b5687896b3069d.44.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/49bcbafbcb5a4098906af3d90089e2e2/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=-bhnQEdvTmkARlVjn4Yt8OEZhmnwxTR6kaXl9TZWG7I';
+    return firstValueFrom(
+      this.http.post(
+        teamsWebhookUrl, 
+        postData,
+      )
     );
   }
 
