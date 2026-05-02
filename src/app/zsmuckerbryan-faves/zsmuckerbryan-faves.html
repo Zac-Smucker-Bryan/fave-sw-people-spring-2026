@@ -13,6 +13,11 @@
       (click)="promisesWithAsyncAwait()">
         Promises with async/await"
       </button>
+      <button 
+      class="btn btn-link"
+      (click)="promisesFun()">
+        Promises fun !!!
+      </button>
     </li>
   @for (p of people$ | async; track p) {
     <li 

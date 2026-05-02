@@ -47,4 +47,32 @@ export class ZsmuckerbryanFaves {
       console.warn(e);
     }
   }
+
+  protected async promisesFun() {
+    try {
+       const numberOne = this.swPeopleSvc.getMagicNumber(true);
+       // console.log(numberOne); // ????
+
+       const numberTwo = this.swPeopleSvc.getMagicNumber(false);
+       // console.log(numberTwo); 
+
+       // const data = await Promise.all(
+       // [numberOne, numberTwo]
+       // );
+
+       const data = await Promise.any(
+       [numberOne, numberTwo]
+       );
+
+       // const data = await Promise.race(
+       // [numberOne, numberTwo]
+       // );
+
+       console.log(data);
+    }
+
+    catch (e) {
+      console.warn(e);
+    }
+  }
 }
