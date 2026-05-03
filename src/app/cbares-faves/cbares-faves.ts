@@ -1,18 +1,83 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
-import { AsyncPipe } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+
+type SwPerson = {
+  name: string;
+  checked: boolean;
+}
 
 @Component({
   selector: 'app-cbares-faves',
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './cbares-faves.html',
   styleUrl: './cbares-faves.css',
 })
 
-export class CbaresFaves {
+export class CbaresFaves implements OnInit{
+
   private swPeopleSvc = inject(SwPeopleService);
 
-  protected readonly people$ = this.swPeopleSvc.getSwPeople();
+  protected readonly selectedCount = computed(
+    () => this.swPeople().filter(p => p.checked).length
+  );
+  // protected readonly people$ = this.swPeopleSvc.getSwPeople();
+
+  async ngOnInit() {
+    const people = await firstValueFrom(
+      this.swPeopleSvc.getSwPeople()
+    );
+
+    this.swPeople.set(
+      people.map(
+        (x: any) => ({
+          name: x,
+          checked: false
+        })
+      )
+    )
+  }
+
+  protected toggleChecked(personToToggle: SwPerson) {
+    this.swPeople.set(
+      this.swPeople().map(
+        x => ({
+          ...x,
+          checked: x === personToToggle
+            ? !x.checked
+            : x.checked,
+        })
+      )
+    )
+  }
+
+  protected clearSelected() {
+    this.swPeople.set(
+      this.swPeople().map(
+        x => ({
+          ...x,
+          checked: false
+        })
+      )
+    )
+  }
+
+  protected async postToMsTeams() {
+    await this.swPeopleSvc.postFavesToMsTeams(
+      {
+        name: `Colin's Faves (${this.selectedCount()})`,
+        faves: this.swPeople()
+          .filter(
+            x => x.checked
+          )
+          .map(
+            x => x.name
+          )
+          .join(', '),
+      }
+    );
+  }
+  protected readonly swPeople = signal<SwPerson[]>([]);
 
   protected promisesAsThenables() {
     const numberPromise = this.swPeopleSvc.getMagicNumber(true).then(
